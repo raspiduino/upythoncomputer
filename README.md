@@ -13,7 +13,7 @@ First, flash the esp8266 by connect like the picture:
 - Go to https://micropython.org/resources/firmware/esp8266-20191220-v1.12.bin and download the MicroPython .bin file (Please use this since it's stable). You also need esptool at https://github.com/espressif/esptool to flash it
 - Open the Command prompt or Terminal and type in:
 > esptool.py --port [your_COM_port] erase_flash
-> esptool.py --port [your_COM_port] --baud 460800 write_flash --flash_size=detect 0 the_bin_file_name_and_path.bin
+> <br /> esptool.py --port [your_COM_port] --baud 460800 write_flash --flash_size=detect 0 the_bin_file_name_and_path.bin
 <br /> Replace it with yours.
 - Unplug the USB to serial module and plug your Arduino in. Clone this git and build the code with Arduino IDE or you can also download the precompiled .hex file and flash it into your Arduino.
 - Connect the pins like below:
