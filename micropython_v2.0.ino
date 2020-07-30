@@ -7,13 +7,14 @@
 #include <PCD8544_HOANGSA.h> //You can download it here: http://arduino.vn/tutorial/1345-nokia5110-huong-dan-su-dung-va-chia-se-thu-vien-hoang-sa
 #include <AltSoftSerial.h>
 
-String all_lcd_content = "";
+//String all_lcd_content = "";
 String command = "";
 String input = "";
 int x_char = 0;
 int y_char = 0;
 int x_key = 6;
 int key = 32;
+int enter = 0;
 
 PCD8544 lcd(14,15,16,17,18); //Setup lcd pin: RST, DC, DIN, CLK. (Connect pin in Readme.md)
 AltSoftSerial esp8266;
@@ -62,7 +63,7 @@ void loop() {
     int incomingByte = esp8266.read(); //Read the character ASCII number to the incomingByte varrible
     if (incomingByte == -1 | incomingByte == 10 | incomingByte == 13) {
       if (incomingByte == 13) { //If the user press enter
-        all_lcd_content = String(all_lcd_content + '\n');
+        //all_lcd_content = String(all_lcd_content + '\n');
         //Serial.println("Next line"); //For debug, in real run please comment this!
         Serial.println("");
         x_char = 0;
@@ -71,7 +72,7 @@ void loop() {
       //Serial.println(F("Not in range!"));
     } else {
       char esp8266_data = char(incomingByte); //Convert number to ASCII character
-      all_lcd_content = String(all_lcd_content + esp8266_data);
+      //all_lcd_content = String(all_lcd_content + esp8266_data);
       Serial.print(esp8266_data);
       printlcd(esp8266_data);
     }
@@ -93,74 +94,55 @@ void loop() {
   /************************Get keys from keyboard**************************/
   /***LEFT button***/
   if(digitalRead(3) == LOW){ //LEFT button is pushed
+    enter = 0;
     if(key > 31){
-      if(key == 32){
-        lcd.Asc_Char(x_key, 40, " ", BLACK);
-        key--;  
-      } else{
-        lcd.Asc_Char(x_key,40,char(key),BLACK);
-        key--; 
-      }
+      key--;
+      lcd.Asc_Char(x_key,40,char(key),BLACK);
     } else{
-        //Out range, back to enter key(128). See below
-        key = 128;
-        lcd.Asc_Char(x_key, 40, "E", BLACK);
-        key--;
+      //Out range, back to enter key(128). See below
+      key = 32;
+      lcd.Asc_Char(x_key, 40, " ", BLACK);
     }
+    delay(100); //Delay for checking the next click
   }
   /***Select button***/
   if(digitalRead(4) == LOW){ //Select button is pushed
-    /*Remember: key-- in the button is execute after print the right key, so the right key must be key++*/
-    key++;
-    if(key == 128){/*Made up for enter key*/
-      esp8266.println(input); //Sent data to esp8266
+    //Click 2 times is press enter!
+    if(enter == 1){
+      esp8266.print(input); //Sent data to esp8266
+      esp8266.println(""); //Press enter
       lcd.Rect(5,39,79,8,BLACK);//Clear the keys
+      lcd.Display();
       x_key = 6;
-    }
-    if(key == 32){
-      for(int i; i < 5; i++){
-        //Delete the string "Space"
-        lcd.Asc_Char(x_key + i,40," ",BLACK);
-        if(x_key < 80){ //Check if end of lcd
-          x_key = x_key + 5;  
-        } else{
-          lcd.Rect(5,40,79,8,BLACK);//Clear the keys
-          x_key = 6;  
-        }   
-      }  
-    }
-    if(key != 32 && key != 128){
+      enter = 0;
+    } else{ //Not press enter
+      /*Remember: key-- in the button is execute after print the right key, so the right key must be key++*/
+      //key--;
+      input = String(input + char(key));
+      Serial.print(char(key));
       if(x_key < 80){ //Check if end of lcd
         x_key = x_key + 5;  
       } else{
         lcd.Rect(5,39,79,8,BLACK);//Clear the keys
         x_key = 6;  
       }
+      enter = 1;
+      delay(100);   
     }
   }
   /***RIGHT button***/
   if(digitalRead(5) == LOW){ //RIGHT button is pushed
-    if(key < 128){
-      if(key == 32){
-        lcd.Asc_Char(x_key, 40, " ", BLACK);
-        key++;
-      } else{
-        lcd.Asc_Char(x_key,40,char(key),BLACK);
-        key++; 
-      }
+    enter = 0;
+    if(key < 127){
+      key++;
+      lcd.Asc_Char(x_key,40,char(key),BLACK); 
     } else{
-      if(key == 128){ //Made this up as enter key because of no enter key in ASCII table!
-        lcd.Asc_Char(x_key, 40, "E", BLACK);
-        key++;
-      } else { //Out range, reset to 32
-        key = 32;
-        lcd.Asc_Char(x_key, 40, " ", BLACK);
-        key++;  
-      }
+      key = 32;
+      lcd.Asc_Char(x_key, 40, " ", BLACK);
     }
   }
   lcd.Display();
-  delay(80); //For the button click
+  delay(100); //Delay for checking the next click
 }
 
 void printlcd(char data){
