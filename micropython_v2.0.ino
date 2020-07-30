@@ -115,6 +115,7 @@ void loop() {
       lcd.Display();
       x_key = 6;
       enter = 0;
+      input = ""; //Clear the input string
     } else{ //Not press enter
       /*Remember: key-- in the button is execute after print the right key, so the right key must be key++*/
       //key--;
