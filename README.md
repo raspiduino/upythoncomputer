@@ -9,4 +9,4 @@ MicroPython provide a small shell to run Python codes and commands. Usually you 
 ## Pins
 Please connect like the picture below:
 ![alt](https://raw.githubusercontent.com/raspiduino/upythoncomputer/master/pinout.PNG)
-This is the connect for the 5V nokia 5110 LCD. If you want to use with 3V ones, please connect 4.7 k resistor to the lcd like this:
+<br /> This is the connect for the 5V nokia 5110 LCD. If you want to use with 3V ones, please connect 4.7 k resistor to the lcd like this:
