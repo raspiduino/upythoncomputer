@@ -28,3 +28,14 @@ Please connect like the picture below:
 ![alt](https://raw.githubusercontent.com/raspiduino/upythoncomputer/master/plug_lcd.jpg)
 
 ## Usuage
+You can plug the Arduino in the computer and send the command into the esp8266 by open the serial monitor. If you want to use it portable, connect batteries into Arduino's VIN port. You can type to the Arduino by using three buttons: Left, Select and Right(in Typing section)
+### Typing
+You can type to the Arduino by pressing three buttons: Left, Select and Right
+<br /> First, use the left and right button to select the keys in the ascii table. Then when you finish, you press select and it will automaticly jump to the next character for you to type. If you finish, press two times to the select button to sent the enter key.
+### Display
+When you power the Arduino, it will display two lines like this:
+<br /> >>>
+<br /> __________________________
+<br /> >
+<br /> The ">>>" is the MicroPython prompt and the ">" is the input text box for you to type in. When you done, press Select two times and it will sent text to MicroPython
+#### This project is on working and maybe unstable sometimes. Sorry for that!
