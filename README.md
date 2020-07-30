@@ -1,5 +1,6 @@
 # MicroPython Computer
 A MiniComputer based on Arduino, ESP8266 and MicroPython!
+Update 30/7/2020: It worked perfectly! Try it!
 ![alt](https://raw.githubusercontent.com/raspiduino/upythoncomputer/master/device_pic.jpg)
 
 ## Description
