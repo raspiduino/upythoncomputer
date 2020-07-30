@@ -15,6 +15,7 @@ First, flash the esp8266 by connect like the picture:
 > esptool.py --port [your_COM_port] erase_flash
 > <br /> esptool.py --port [your_COM_port] --baud 460800 write_flash --flash_size=detect 0 the_bin_file_name_and_path.bin
 <br /> Replace it with yours.
+- Send the boot.py and change_baud.py in the git to esp8266 using ampy. See this: https://github.com/scientifichackers/ampy
 - Unplug the USB to serial module and plug your Arduino in. Clone this git and build the code with Arduino IDE or you can also download the precompiled .hex file and flash it into your Arduino.
 - Connect the pins like below:
 
