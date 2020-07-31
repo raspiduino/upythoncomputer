@@ -2,7 +2,7 @@
 /*MicroPython display on Nokia5110 LCD*/
 /*Arduino Uno side*/
 /*Copyright 2020 @raspiduino*/
-/*Under GPL-v3*/
+/*Under MIT License*/
 /*************************************************************************************************/
 #include <PCD8544_HOANGSA.h> //You can download it here: http://arduino.vn/tutorial/1345-nokia5110-huong-dan-su-dung-va-chia-se-thu-vien-hoang-sa
 #include <AltSoftSerial.h>
@@ -97,11 +97,11 @@ void loop() {
     enter = 0;
     if(key > 31){
       key--;
-      lcd.Asc_Char(x_key,40,char(key),BLACK);
+      lcd.Asc_Char(x_key,40,key,BLACK);
     } else{
       //Out range, back to enter key(128). See below
-      key = 32;
-      lcd.Asc_Char(x_key, 40, " ", BLACK);
+      key = 126;
+      lcd.Asc_Char(x_key, 40,126, BLACK);
     }
     delay(100); //Delay for checking the next click
   }
@@ -111,16 +111,14 @@ void loop() {
     if(enter == 1){
       esp8266.print(input); //Sent data to esp8266
       esp8266.println(""); //Press enter
-      lcd.Rect(5,39,79,8,BLACK);//Clear the keys
+      //lcd.Rect(5,39,79,8,BLACK);//Clear the keys
       lcd.Display();
       x_key = 6;
       enter = 0;
-      input = ""; //Clear the input string
+      input = "";
     } else{ //Not press enter
-      /*Remember: key-- in the button is execute after print the right key, so the right key must be key++*/
-      //key--;
       input = String(input + char(key));
-      Serial.print(char(key));
+      Serial.print(key);
       if(x_key < 80){ //Check if end of lcd
         x_key = x_key + 5;  
       } else{
@@ -136,7 +134,7 @@ void loop() {
     enter = 0;
     if(key < 127){
       key++;
-      lcd.Asc_Char(x_key,40,char(key),BLACK); 
+      lcd.Asc_Char(x_key,40,key,BLACK); 
     } else{
       key = 32;
       lcd.Asc_Char(x_key, 40, " ", BLACK);
